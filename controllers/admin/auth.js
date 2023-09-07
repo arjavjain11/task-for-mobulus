@@ -1,14 +1,11 @@
 import bcrypt from "bcryptjs";
-import Admin from './../../models/admin';
+import Admin from './../../models/admin.js';
+import jwt from "jsonwebtoken";
 
 const adminLogin = async (req, res) => {
     const { email="", password, phoneNumber=null } = req.body;
     try {
-      if(!email || !phoneNumber) {
-         return res.status(400).json({ message: 'Bad Request' });
-      }
-
-      const user = phoneNumber ? (await Admin.findOne({ email })) : (await Admin.findOne({ phoneNumber }));
+      const user = phoneNumber ? (await Admin.findOne({ phoneNumber })) : (await Admin.findOne({ email }));
       if (!user) {
         return res.status(404).json({ message: 'User not Found' });
       }
@@ -19,10 +16,11 @@ const adminLogin = async (req, res) => {
         return res.status(401).json({ message: 'Invalid credentials' });
       }
 
-      const token = jwt.sign({ email }, "asdfghjkl");
+      const token = jwt.sign({ user }, "asdfghjkl");
       res.status(200).json({ token });
 
     } catch (error) {
+      console.log(error);
       res.status(500).json({ message: 'Error logging in' });
     }
 }

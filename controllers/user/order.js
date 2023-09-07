@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken";
-import User from "../../models/user";
-import Product, { WareHouse } from "../../models/product";
-import { getCoordinates } from "../../helper/getCordinatesForLocations";
+import User from "../../models/user.js";
+import{ Product, WareHouse } from "../../models/product.js";
+import { getCoordinates } from "../../helper/getCordinatesForLocations.js";
 
 const findData = async (req, res) => {
     let token = req.headers.authorization;

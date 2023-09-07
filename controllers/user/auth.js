@@ -3,6 +3,7 @@ import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 
 const signUp = async (req, res) => {
+  console.log(req.body);
     const { email, phoneNumber, firstName, lastName, password, city } = req.body;
 
     let salt = bcrypt.genSaltSync(10);
@@ -14,11 +15,12 @@ const signUp = async (req, res) => {
         return res.status(400).json({ message: 'User already exists' });
       }
       const isVerified = false;
-      const newUser = new User({ email, phoneNumber, firstName, lastName, isVerified, city, password: hash });
+      const newUser = new User({ email, firstName, lastName, phoneNumber, isVerified, city, password: hash });
       await newUser.save();
       
       res.status(201).json({ message: 'User registered successfully' });
     } catch (error) {
+      console.log(error);
       res.status(500).json({ message: 'Error registering user' });
     }
 }
@@ -27,11 +29,7 @@ const signUp = async (req, res) => {
 const login = async (req, res) => {
     const { email="", password, phoneNumber=null } = req.body;
     try {
-      if(!email || !phoneNumber) {
-         return res.status(400).json({ message: 'Bad Request' });
-      }
-
-      const user = phoneNumber ? (await User.findOne({ email })) : (await User.findOne({ phoneNumber }));
+      const user = phoneNumber ? (await User.findOne({ phoneNumber })) : (await User.findOne({ email }));
 
       const { status = "" } = user;
 
@@ -49,7 +47,7 @@ const login = async (req, res) => {
         return res.status(401).json({ message: 'Invalid credentials' });
       }
 
-      const token = jwt.sign({ email }, "asdfghjkl");
+      const token = jwt.sign({ user }, "asdfghjkl");
       res.status(200).json({ token });
     } catch (error) {
       res.status(500).json({ message: 'Error logging in' });

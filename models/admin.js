@@ -9,6 +9,6 @@ const AdminSchema = new mongoose.Schema({
     isAdmin: { type: Boolean, default: true }
   });
 
-const Admin = mongoose.model('User', AdminSchema);
+const Admin = mongoose.model('Admin', AdminSchema);
 
 export default Admin;

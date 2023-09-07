@@ -1,4 +1,4 @@
-const axios = require('axios');
+import axios from "axios";
 
 const MAPBOX_API_KEY = 'YOUR_MAPBOX_API_KEY';
 const BASE_URL = 'https://api.mapbox.com/geocoding/v5/mapbox.places';

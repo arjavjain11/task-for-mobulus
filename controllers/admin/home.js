@@ -1,8 +1,8 @@
 import jwt from "jsonwebtoken";
-import User from "../../models/user";
-import Product, { WareHouse } from "../../models/product";
-import Order from "../../models/order";
-import { getCoordinates } from "../../helper/getCordinatesForLocations";
+import User from "../../models/user.js";
+import { Product, WareHouse } from "../../models/product.js";
+import Order from "../../models/order.js";
+import { getCoordinates } from "../../helper/getCordinatesForLocations.js";
 
 const updateUserStatus = async (req,res) => {
 
@@ -19,9 +19,11 @@ const updateUserStatus = async (req,res) => {
       if (!verifiedUser) {
         return res.status(401).send('Unauthorized request');
       }
-      const { role } = verifiedUser;
 
-      if (role !== "admin") {
+      console.log(verifiedUser);
+      const { isAdmin } = verifiedUser.user;
+
+      if (!isAdmin) {
         return res.status(401).send('You are not authorized person');
       }
 
@@ -40,6 +42,7 @@ const updateUserStatus = async (req,res) => {
         res.send("User Status Updated Successfully");
       }
     } catch (error) {
+        console.log("error", error);
         res.send("error in Home page", error);
     }
 }
@@ -57,9 +60,9 @@ const orderStatusUpdate = async(req,res) => {
       if (!verifiedUser) {
         return res.status(401).send('Unauthorized request');
       }
-      const { role } = verifiedUser;
+      const { isAdmin } = verifiedUser.user;
 
-      if (role !== "admin") {
+      if (!isAdmin) {
         return res.status(401).send('You are not authorized person');
       }
 
@@ -96,9 +99,9 @@ const productManagment = async(req, res) => {
       if (!verifiedUser) {
         return res.status(401).send('Unauthorized request');
       }
-      const { role } = verifiedUser;
+      const { isAdmin } = verifiedUser.user;
 
-      if (role !== "admin") {
+      if (!isAdmin) {
         return res.status(401).send('You are not authorized person');
       }
 

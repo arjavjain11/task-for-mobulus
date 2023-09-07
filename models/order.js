@@ -9,6 +9,6 @@ const OrderSchema = new mongoose.Schema({
     address: { type: String, required: true },
   });
 
-const Order = mongoose.model('Product', OrderSchema);
+const Order = mongoose.model('Order', OrderSchema);
 
 export default Order;
